@@ -264,12 +264,14 @@ end
 
 -- Napalm
 unit("legbar").weapondefs.clusternapalm = table.copy(UD.legehovertank.weapondefs.parabolic_rockets)
+unitDef.speed = 49
 weapon("clusternapalm")
-weaponDef.areaofeffect = 48
+weaponDef.areaofeffect = 56
+weaponDef.edgeeffectiveness = 0.25
 weaponDef.explosiongenerator = "custom:genericshellexplosion-small-bomb"
 weaponDef.burst = 3
 weaponDef.burstrate = 0.4
-weaponDef.range = 580
+weaponDef.range = 610
 weaponDef.weaponvelocity = 260
 
 unit("legbart").weapondefs.clusternapalm = table.copy(UD.armfido.weapondefs.bfido)
