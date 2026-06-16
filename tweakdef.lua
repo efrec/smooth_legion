@@ -354,6 +354,8 @@ costs(0.82)
 
 UD.legnavyartyship = nil
 
+UD.legkam = UD.armthund
+
 unit("legrampart").radardistancejam = nil
 unitDef.weapons[2] = nil
 costs(0.9)
