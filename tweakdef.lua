@@ -261,7 +261,7 @@ for name, wname in pairs { legcen = "gauss", legaskirmtank = "legmgplasma", legm
 	local base = weaponDef.damage.default
 	damages(burst)
 	weaponDef.burst = nil
-	local t = (weaponDef.damage.default - base) / (ref.damage.default - base)
+	local t = math.clamp((weaponDef.damage.default - base) / (ref.damage.default - base), 0, 2)
 	weaponDef.areaofeffect = math.mix(weaponDef.areaofeffect, ref.areaofeffect, t)
 end
 
