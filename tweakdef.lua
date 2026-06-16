@@ -270,9 +270,8 @@ weaponDef.areaofeffect = 48
 weaponDef.explosiongenerator = "custom:genericshellexplosion-small-bomb"
 weaponDef.burst = 3
 weaponDef.burstrate = 0.4
-weaponDef.range = 535
-weaponDef.weaponvelocity = 240
-damages(0.8)
+weaponDef.range = 580
+weaponDef.weaponvelocity = 260
 
 unit("legbart").weapondefs.clusternapalm = table.copy(UD.armfido.weapondefs.bfido)
 costs(0.85)
