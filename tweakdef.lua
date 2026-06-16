@@ -186,9 +186,10 @@ end
 
 local function scaleLaserFX(grav)
 	local scale = math.sqrt(damages().default / ref.damage.default) * (grav or 1) + (0.5 - (grav or 1) * 0.5)
+	-- scale = scale / weaponDef.beamtime -- TODO: can never remember the units of this thing, seconds?
 	set(weaponDef, "corethickness", scale)
 	set(weaponDef, "thickness", scale)
-	set(weaponDef, "laserflaresize", scale * 0.5 + 0.5)
+	set(weaponDef, "laserflaresize", scale * 0.1 + 0.9)
 end
 
 -- Heat rays
