@@ -328,12 +328,14 @@ weaponDef.ownerExpAccWeight = 2
 weaponDef.accuracy = 100
 weaponDef.sprayangle = 880
 
-unit("legnavydestro").weapons[2] = nil
-costs(0.82)
-
 unit("legnavyfrigate").weapons[1].badtargetcategory = "UNDERWATER"
 unit("legnavyfrigate").weapons[2] = nil
 costs(0.88)
+
+unit("legnavydestro").weapons[2] = nil
+costs(0.82)
+
+UD.legnavyartyship = nil
 
 unit("legrampart").radardistancejam = nil
 unitDef.weapons[2] = nil
