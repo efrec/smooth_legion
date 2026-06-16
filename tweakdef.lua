@@ -171,14 +171,12 @@ UD.legmex.energyupkeep = 3
 --------------------------------------------------------------------------------
 -- Make T1.5 units smoother ----------------------------------------------------
 
-unit("legkark")
-costs(0.9)
-set(unitDef, "health", 0.9)
-set(unitDef, "speed", 1.09)
-
-unit("leggat")
-costs(1.12)
-set(unitDef, "health", 1.1)
+for _, name in ipairs { "legkark", "leggat" } do
+	unit(name) costs(0.9) set(unitDef, "health", 0.9) set(unitDef, "speed", 1.07)
+	for wname in pairs(unitDef.weapondefs) do
+		weapon(wname) damages(0.92)
+	end
+end
 
 --------------------------------------------------------------------------------
 -- Weapon conversions ----------------------------------------------------------
