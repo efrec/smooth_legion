@@ -287,6 +287,20 @@ weaponDef.weaponvelocity = 460
 
 UD.legperdition.weapondefs.napalmmissile = table.copy(UD.cortron.weapondefs.cortron_weapon)
 
+-- Medusa
+unit("legmed").weapondefs.laser = table.copy(UD.corak.weapondefs.gator_laser)
+unitDef.weapons[1].badtargetcategory = "VTOL"
+unitDef.weapons[2].badtargetcategory = "VTOL"
+unitDef.weapons[2].slaveto = nil
+weapon("legmed_missile").customparams = {
+	cruise_max_height = 40,
+	cruise_min_height = 15,
+	lockon_dist = 100,
+	speceffect = "cruise",
+	projectile_destruction_method = "descend",
+	overrange_distance = 1093,
+}
+
 --------------------------------------------------------------------------------
 -- Reactive armor --------------------------------------------------------------
 
