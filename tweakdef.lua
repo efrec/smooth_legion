@@ -184,13 +184,20 @@ end
 -- These are total conversions that otherwise preserve the stats of the weapon.
 -- Overall stat changes (eg total burst size) should be done in other sections.
 
+local function scaleLaserFX(grav)
+	local scale = math.sqrt(damages().default / ref.damge.default) * (grav or 1) + (0.5 - (grav or 1) * 0.5)
+	set(weaponDef, "corethickness", scale)
+	set(weaponDef, "thickness", scale)
+	set(weaponDef, "laserflaresize", scale * 0.5 + 0.5)
+end
+
 -- Heat rays
 ref = UD.cormaw.weapondefs.dmaw
 UD.legamph.weapondefs.heat_ray = table.copy(ref)
 -- more? maybe?
 
-ref = UD.armbeamer.weapondefs.armbeamer_weapon
-for name, wname in pairs { legheavydrone = "heat_ray", leginc = "heatraylarge", leginfestor = "festorbeam", legkark = "heat_ray", legbastion = "t2heatray", leglht = "heat_ray", legsh = "heat_ray", leganavyflagship = "leg_experimental_heatray", legnavydestro = "leg_medium_heatray", legeheatraymech = "heatray1", legehovertank = "heat_ray", legaheattank = "heat_ray", leghelios = "heat_ray" } do
+ref = UD.armllt.weapondefs.arm_lightlaser
+for name, wname in pairs { leginfestor = "festorbeam", leglht = "heat_ray", legsh = "heat_ray", leghelios = "heat_ray" } do
 	unit(name) weapon(wname)
 	if weaponDef.areaofeffect >= 40 and weaponDef.impactonly ~= 1 then
 		costs(0.95)
@@ -198,7 +205,19 @@ for name, wname in pairs { legheavydrone = "heat_ray", leginc = "heatraylarge", 
 	copy(weaponDef, "impactonly", "areaofeffect",
 		"corethickness", "explosiongenerator", "intensity", "laserflaresize", "rgbcolor", "thickness", "size",
 		"soundhitdry", "soundhitwet", "soundstart")
-	-- todo: rescale beam thickness, etc.
+	scaleLaserFX()
+end
+
+ref = UD.armbeamer.weapondefs.armbeamer_weapon
+for name, wname in pairs { legheavydrone = "heat_ray", leginc = "heatraylarge", legkark = "heat_ray", legbastion = "t2heatray", leganavyflagship = "leg_experimental_heatray", legnavydestro = "leg_medium_heatray", legeheatraymech = "heatray1", legehovertank = "heat_ray", legaheattank = "heat_ray" } do
+	unit(name) weapon(wname)
+	if weaponDef.areaofeffect >= 40 and weaponDef.impactonly ~= 1 then
+		costs(0.95)
+	end
+	copy(weaponDef, "impactonly", "areaofeffect",
+		"corethickness", "explosiongenerator", "intensity", "laserflaresize", "rgbcolor", "thickness", "size",
+		"soundhitdry", "soundhitwet", "soundstart")
+	scaleLaserFX()
 end
 
 -- Railguns
@@ -213,6 +232,7 @@ for name, wname in pairs { legrail = "railgun", legsrail = "railgunt2", leganavy
 	weaponDef.weaponvelocity = weaponDef.range + 100
 	cparams.overpenetrate = nil
 	damages(1.3)
+	scaleLaserFX(0.6667)
 end
 
 ref = UD.armaak.weapondefs.longrangemissile
