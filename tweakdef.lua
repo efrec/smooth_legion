@@ -355,6 +355,12 @@ costs(0.82)
 
 UD.legnavyartyship = nil
 
+ref = UD.armfig
+unit("legfig")
+copy(unitDef, "buildtime", "energycost", "metalcost", "speed", "turnradius")
+unitDef.weapondefs.semiauto = table.copy(ref.weapondefs.armvtol_missile)
+unitDef.weapons[1].maxangledif = nil
+
 UD.legkam = table.copy(UD.armthund)
 
 unit("legrampart").radardistancejam = nil
