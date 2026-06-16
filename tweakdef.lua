@@ -384,6 +384,10 @@ unitDef.weapons[1].maxangledif = nil
 
 UD.legkam = table.copy(UD.armthund)
 
+UD.legspcarrier.weapondefs.leg_drone_controller.customparams.carried_unit = "legfig"
+UD.legspcarrier.weapons[1].onlytargetcategory = "VTOL"
+UD.legspcarrier.weapons[1].badtargetcategory = "LIGHTAIRSCOUT"
+
 unit("legrampart").radardistancejam = nil
 unitDef.weapons[2] = nil
 costs(0.9)
