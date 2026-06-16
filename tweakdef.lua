@@ -268,7 +268,6 @@ weaponDef.burst = 3
 weaponDef.burstrate = 0.4
 weaponDef.range = 535
 weaponDef.weaponvelocity = 240
-damages(0.4)
 
 unit("legbart").weapondefs.clusternapalm = table.copy(UD.armfido.weapondefs.bfido)
 costs(0.85)
