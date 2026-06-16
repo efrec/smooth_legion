@@ -150,6 +150,7 @@ local function damages(mult, base)
 	for armor in pairs(weaponDef.damage) do
 		set(weaponDef.damage, armor, mult, base)
 	end
+	return weaponDef.damage
 end
 
 --------------------------------------------------------------------------------
