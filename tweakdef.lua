@@ -236,13 +236,13 @@ for name, wname in pairs { legcen = "gauss", legaskirmtank = "legmgplasma", lega
 	unit(name) weapon(wname)
 	weaponDef.name = "Medium Plasma Cannon"
 	weaponDef.impactonly = false
-	local area = weaponDef.areaofeffect
 	local burst = weaponDef.burst
-	local damage = weaponDef.damage.default * burst
 	copy(weaponDef, "impactonly", "impulsefactor", "weaponvelocity", "edgeeffectiveness")
+	local base = weaponDef.damage.default
 	damages(burst)
 	weaponDef.burst = nil
-	weaponDef.areaofeffect = ref.areaofeffect * damage / ref.damage.default
+	local t = (weaponDef.damage.default - base) / (ref.damage.default - base)
+	weaponDef.areaofeffect = math.mix(weaponDef.areaofeffect, ref.areaofeffect, t)
 end
 
 -- Cluster plasma
