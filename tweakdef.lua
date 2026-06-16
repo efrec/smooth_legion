@@ -354,7 +354,7 @@ costs(0.82)
 
 UD.legnavyartyship = nil
 
-UD.legkam = UD.armthund
+UD.legkam = table.copy(UD.armthund)
 
 unit("legrampart").radardistancejam = nil
 unitDef.weapons[2] = nil
