@@ -406,6 +406,8 @@ UD.legelrpcmech = nil
 
 UD.legeallterrainmech.weapons[5] = nil
 
+UD.legstarfall = table.copy(UD.armvulc)
+
 --------------------------------------------------------------------------------
 -- Convert to tweakunits -------------------------------------------------------
 
