@@ -308,6 +308,10 @@ UD.leghive, UD.legfhive = nil, nil
 unit("legnavydestro").weapons[2] = nil
 costs(0.82)
 
+unit("legnavyfrigate").weapons[1].badtargetcategory = "UNDERWATER"
+unit("legnavyfrigate").weapons[2] = nil
+costs(0.88)
+
 unit("legrampart").radardistancejam = nil
 unitDef.weapons[2] = nil
 costs(0.9)
