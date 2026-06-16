@@ -293,6 +293,8 @@ for _, name in ipairs { "legkark", "legamph", "legshot" } do
 	local armorHealth = cparams.reactive_armor_health
 	local healthBonus = armorHealth * (0.5 + math.sqrt(armorHealth * armoredMult / unitDef.health) * (armoredMult - 1))
 	unitDef.health = unitDef.health + healthBonus
+	cparams.reactive_armor_health = nil
+	cparams.reactive_armor_restore = nil
 end
 
 --------------------------------------------------------------------------------
