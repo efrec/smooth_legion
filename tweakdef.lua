@@ -266,11 +266,11 @@ end
 
 -- Cluster plasma
 ref = UD.armamb.weapondefs.armamb_gun
-local function toplasma(name, wname)
+local function toplasma(name, wname, cname)
 	unit(name) weapon(wname) custom(weaponDef)
 	copy(weaponDef, "cegtag", "explosiongenerator")
 	local count = cparams.cluster_number or 5
-	local damage = unitDef.weapondefs.cluster_munition.damage.default
+	local damage = unitDef.weapondefs[cname or "cluster_munition"].damage.default
 	damages(1 + math.sqrt(count * damage / weaponDef.damage.default))
 	cparams.cluster_def, cparams.cluster_number = nil, nil
 end
@@ -280,6 +280,8 @@ end
 for name, wname in pairs { legcluster = "plasma_high", legacluster = "plasma_high", legeallterrainmech = "plasma_high" } do
 	toplasma(name, wname)
 end
+toplasma("leganavyartyship", "leg_mobile_cluster_lrpc_cannon", "cluster_munition_main")
+toplasma("leganavyartyship", "leg_mobile_cluster_plasma", "cluster_munition_secondary")
 
 -- Napalm
 unit("legbar").weapondefs.clusternapalm = table.copy(UD.legehovertank.weapondefs.parabolic_rockets)
