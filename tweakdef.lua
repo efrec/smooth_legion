@@ -348,6 +348,9 @@ UD.legfloat.floater = nil
 unit("leganavybattleship").movementclass = "BOAT9"
 costs(0.88)
 
+unit("leganavyantinukecarrier").weapons[1] = nil
+costs(0.9)
+
 UD.legelrpcmech = nil
 
 UD.legeallterrainmech.weapons[5] = nil
