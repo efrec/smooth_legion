@@ -232,7 +232,7 @@ end
 
 -- Burst plasma
 ref = UD.correap.weapondefs.cor_reap
-for name, wname in pairs { legcen = "gauss", legaskirmtank = "legmgplasma", leganavybattleship = "burst_plasma_t2", } do
+for name, wname in pairs { legcen = "gauss", legaskirmtank = "legmgplasma", legmrv = "quickshot_cannon", leganavybattleship = "burst_plasma_t2", } do
 	unit(name) weapon(wname)
 	weaponDef.name = "Medium Plasma Cannon"
 	weaponDef.impactonly = false
