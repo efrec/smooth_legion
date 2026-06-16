@@ -4,7 +4,8 @@
 local UD = UnitDefs
 
 if not UD.legcom then
-	Spring.Echo('Error in small teams tweadefs: Legion not enabled.')
+	Spring.Echo('Error in smooth legion tweadef: Legion not enabled.')
+	return
 end
 
 --------------------------------------------------------------------------------
