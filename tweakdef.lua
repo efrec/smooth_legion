@@ -319,6 +319,14 @@ end
 
 UD.leghive, UD.legfhive = nil, nil
 
+unit("legmg") weapon("armmg_weapon")
+unitDef.cantbetransported = true
+costs(1.07)
+weaponDef.range = 620
+weaponDef.ownerExpAccWeight = 2
+weaponDef.accuracy = 100
+weaponDef.sprayangle = 880
+
 unit("legnavydestro").weapons[2] = nil
 costs(0.82)
 
