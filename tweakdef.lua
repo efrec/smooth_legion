@@ -193,6 +193,9 @@ UD.legamph.weapondefs.heat_ray = table.copy(ref)
 ref = UD.armbeamer.weapondefs.armbeamer_weapon
 for name, wname in pairs { legheavydrone = "heat_ray", leginc = "heatraylarge", leginfestor = "festorbeam", legkark = "heat_ray", legbastion = "t2heatray", leglht = "heat_ray", legsh = "heat_ray", leganavyflagship = "leg_experimental_heatray", legnavydestro = "leg_medium_heatray", legeheatraymech = "heatray1", legehovertank = "heat_ray", legaheattank = "heat_ray", leghelios = "heat_ray" } do
 	unit(name) weapon(wname)
+	if weaponDef.areaofeffect >= 40 and weaponDef.impactonly ~= 1 then
+		costs(0.95)
+	end
 	copy(weaponDef, "impactonly", "areaofeffect",
 		"corethickness", "explosiongenerator", "intensity", "laserflaresize", "rgbcolor", "thickness", "size",
 		"soundhitdry", "soundhitwet", "soundstart")
