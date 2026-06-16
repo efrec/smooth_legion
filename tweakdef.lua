@@ -301,6 +301,8 @@ weapon("legmed_missile").customparams = {
 	projectile_destruction_method = "descend",
 	overrange_distance = 1093,
 }
+ref = weaponDef
+weapon("laser").range = ref.range
 
 --------------------------------------------------------------------------------
 -- Reactive armor --------------------------------------------------------------
