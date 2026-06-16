@@ -304,7 +304,7 @@ weapon("rapidnapalm")
 weaponDef.burst = 3
 weaponDef.burstrate = 0.3333
 weaponDef.reloadtime = 2
-weaponDef.mygravity = 0.1667
+weaponDef.mygravity = 0.18
 weaponDef.range = 1200
 weaponDef.weaponvelocity = 460
 
@@ -368,9 +368,9 @@ weaponDef.ownerExpAccWeight = 2
 weaponDef.accuracy = 100
 weaponDef.sprayangle = 880
 
-unit("legnavyfrigate").weapons[1].badtargetcategory = "UNDERWATER"
-unit("legnavyfrigate").weapons[2] = nil
-costs(0.88)
+unit("legnavyfrigate").weapons[1].onlytargetcategory = "NOTSUB"
+unitDef.weapons[2] = nil
+costs(0.85)
 
 unit("legnavydestro").weapons[2] = table.copy(UD.corroy.weapons[2])
 unitDef.weapondefs.depthcharge = table.copy(UD.corroy.weapondefs.depthcharge)
@@ -386,6 +386,8 @@ unitDef.weapondefs.semiauto = table.copy(ref.weapondefs.armvtol_missile)
 unitDef.weapons[1].maxangledif = nil
 
 UD.legkam = table.copy(UD.armthund)
+
+table.insert(UD.legap.buildoptions, "corfink")
 
 UD.legspcarrier.weapondefs.leg_drone_controller.customparams.carried_unit = "legfig"
 UD.legspcarrier.weapons[1].onlytargetcategory = "VTOL"
