@@ -185,7 +185,7 @@ end
 -- Overall stat changes (eg total burst size) should be done in other sections.
 
 local function scaleLaserFX(grav)
-	local scale = math.sqrt(damages().default / ref.damge.default) * (grav or 1) + (0.5 - (grav or 1) * 0.5)
+	local scale = math.sqrt(damages().default / ref.damage.default) * (grav or 1) + (0.5 - (grav or 1) * 0.5)
 	set(weaponDef, "corethickness", scale)
 	set(weaponDef, "thickness", scale)
 	set(weaponDef, "laserflaresize", scale * 0.5 + 0.5)
