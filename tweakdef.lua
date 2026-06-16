@@ -304,7 +304,7 @@ weapon("rapidnapalm")
 weaponDef.burst = 3
 weaponDef.burstrate = 0.3333
 weaponDef.reloadtime = 2
-weaponDef.mygravity = 0.2
+weaponDef.mygravity = 0.1667
 weaponDef.range = 1200
 weaponDef.weaponvelocity = 460
 
