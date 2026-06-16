@@ -304,6 +304,19 @@ weapon("legmed_missile").customparams = {
 ref = weaponDef
 weapon("laser").range = ref.range
 
+-- Blindfold
+unit("legcib") weapon("juno_pulse_mini")
+unitDef.weapondefs.emp_pulse = table.copy(weaponDef)
+unitDef.weapons[1].def = "emp_pulse"
+unitDef.weapondefs.juno_pulse_mini = nil
+weapon("emp_pulse")
+weaponDef.customparams = nil
+weaponDef.paralyzer = true
+weaponDef.paralyzetime = 8
+weaponDef.edgeeffectiveness = 0.3
+weaponDef.damage.default = 300
+weaponDef.damage.vtol = 10
+
 --------------------------------------------------------------------------------
 -- Reactive armor --------------------------------------------------------------
 
