@@ -369,8 +369,10 @@ unit("legnavyfrigate").weapons[1].badtargetcategory = "UNDERWATER"
 unit("legnavyfrigate").weapons[2] = nil
 costs(0.88)
 
-unit("legnavydestro").weapons[2] = nil
-costs(0.82)
+unit("legnavydestro").weapons[2] = table.copy(UD.corroy.weapons[2])
+unitDef.weapondefs.depthcharge = table.copy(UD.corroy.weapondefs.depthcharge)
+unitDef.weapondefs.drone_control_matrix = nil
+costs(1.08)
 
 UD.legnavyartyship = nil
 
