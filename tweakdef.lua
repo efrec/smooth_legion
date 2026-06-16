@@ -402,6 +402,11 @@ costs(0.88)
 unit("leganavyantinukecarrier").weapons[1] = nil
 costs(0.9)
 
+UD.legphoenix = nil
+
+unit("legmineb").weapondefs.cor_seaadvbomb = table.copy(UD.corhurc.weapondefs.coradvbomb)
+costs(0.94)
+
 UD.legelrpcmech = nil
 
 UD.legeallterrainmech.weapons[5] = nil
