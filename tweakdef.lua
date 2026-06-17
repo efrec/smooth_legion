@@ -329,7 +329,7 @@ weapon("emp_pulse")
 weaponDef.customparams = nil
 weaponDef.paralyzer = true
 weaponDef.paralyzetime = 5
-weaponDef.areaofeffect = 500
+weaponDef.areaofeffect = 420
 weaponDef.edgeeffectiveness = 0
 weaponDef.damage.default = 300
 weaponDef.damage.vtol = 10
