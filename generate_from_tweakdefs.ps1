@@ -10,6 +10,7 @@ $tweakdef = 'tweakdef.lua'
 $encoding = 'tweakdef_encoding.txt'
 $minified = 'tweakdef_minified.lua'
 $min_code = 'tweakdef_minified_encoding.txt'
+$too_long = 'tweakdef_minified_encoding_too_long.txt'
 $template = 'template.md'
 $git_gist = 'gist.md'
 
@@ -17,8 +18,8 @@ $substitutions = @{
 	# Sets a lobby message for the tweak. It should be short but must be unique and descriptive enough:
     '(?sm)\A--[\s\S]+?(?=^local)'                                          = "--$lobbymsg`n"
 	# Remove testing code used for Rapid Iteration Development (writing shit code and then running it):
-    '^-- Tests[\s\S]+?(?=^-- Initialize)'                                  = ''
-    '\bno(?:unit|weapon)\(\w*\)'                                           = ''
+    '(?sm)^-- Tests[\s\S]+?(?=^-- Initialize)'                                  = ''
+    '(?sm)^\s*no(?:unit|weapon)\(\w*\)\r\n'                                      = ''
 	# Remove the rest of the tweakdefs => tweakunits conversion code. Should just remove this entirely:
     'local units = \{\}\r?\n'                                              = ''
     '(?sm)\r?\nlocal function (deep|diff|dumb_equal)[\s\S\r\n]+?^end\r?\n' = ''
@@ -64,13 +65,10 @@ $min_code_content = $tweakdef_content
 
 Set-Content -Path $base_dir\$min_code -Value $min_code_content -NoNewline -Force -EA 0
 
-if ($min_code_content.Length() -gt 16000) {
+if (Test-Path $base_dir\$too_long) { Remove-Item $base_dir\$too_long -Force }
+if ($min_code_content.Length -gt 16000) {
 	Write-Warning -Message "Minified, encoded tweak ($min_code) is too long for online."
-	Set-Content -Path $base_dir\too_long.txt -Value "$min_code is too long for online."
-}
-elseif (Get-FileItem -Path $base_dir\too_long.txt)
-{
-	Remove-Item -Path $base_dir\too_long.txt -Force
+	Set-Content -Path $base_dir\$too_long -Value "$min_code is too long for online."
 }
 
 # The gist contains portions of all the previous in a markdown document.
