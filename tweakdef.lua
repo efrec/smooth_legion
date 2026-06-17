@@ -372,12 +372,15 @@ unit("legnavyfrigate").weapons[1].onlytargetcategory = "NOTSUB"
 unitDef.weapons[2] = nil
 costs(0.85)
 
-unit("legnavydestro").weapons[2] = table.copy(UD.corroy.weapons[2])
+ref = UD.legnavyartyship
+unit("legnavydestro")
+copy(unitDef, "buildpic", "collisionvolumeoffsets", "collisionvolumescales", "collisionvolumetype", "objectname", "script")
+unitDef.weapons[2] = table.copy(UD.corroy.weapons[2])
 unitDef.weapondefs.depthcharge = table.copy(UD.corroy.weapondefs.depthcharge)
 unitDef.weapondefs.drone_control_matrix = nil
 costs(1.08)
 
-UD.legnavyartyship = nil
+UD.levnavyartyship = nil
 
 ref = UD.armfig
 unit("legfig")
