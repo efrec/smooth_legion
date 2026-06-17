@@ -154,10 +154,9 @@ local function costs(mult, add_m, add_e, add_bp)
 	end
 end
 
-local function damages(mult, base)
-	if not base then base = 0 end
+local function damages(mult, add)
 	for armor in pairs(weaponDef.damage) do
-		set(weaponDef.damage, armor, mult, base)
+		set(weaponDef.damage, armor, mult, add)
 	end
 	return weaponDef.damage
 end
