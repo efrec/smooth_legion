@@ -1,6 +1,6 @@
 This is Legion as it was meant to be. There are no hard edges. It is perfectly smooth in all directions.
 
-Use this tweak: `!bset tweakdefs <copy and paste contents of encoded.txt>`
+Use this tweak: `!bset tweakdefs <contents of tweakdef_minified_encoding.txt>`
 
 ### What it does
 
