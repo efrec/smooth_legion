@@ -193,27 +193,23 @@ local function scaleLaserFX(grav)
 end
 
 -- Heat rays
-ref = UD.armllt.weapondefs.arm_lightlaser
-for name, wname in pairs { leginfestor = "festorbeam", leglht = "heat_ray", legsh = "heat_ray", leghelios = "heat_ray" } do
+local function scaleHeatRay(name, wname)
 	unit(name) weapon(wname)
 	if weaponDef.areaofeffect >= 40 and weaponDef.impactonly ~= 1 then
 		costs(0.95)
 	end
 	copy(weaponDef, "impactonly", "areaofeffect",
 		"corethickness", "explosiongenerator", "intensity", "laserflaresize", "rgbcolor", "thickness", "size",
-		"soundhitdry", "soundhitwet", "soundstart")
+		"soundhitdry", "soundhitwet")
 	scaleLaserFX()
+end
+ref = UD.armllt.weapondefs.arm_lightlaser
+for name, wname in pairs { leginfestor = "festorbeam", leglht = "heat_ray", legsh = "heat_ray", leghelios = "heat_ray" } do
+	scaleHeatRay(name, wname)
 end
 ref = UD.armbeamer.weapondefs.armbeamer_weapon
 for name, wname in pairs { legheavydrone = "heat_ray", leginc = "heatraylarge", legkark = "heat_ray", legbastion = "t2heatray", leganavyflagship = "leg_experimental_heatray", legnavydestro = "leg_medium_heatray", legeheatraymech = "heatray1", legehovertank = "heat_ray", legaheattank = "heat_ray" } do
-	unit(name) weapon(wname)
-	if weaponDef.areaofeffect >= 40 and weaponDef.impactonly ~= 1 then
-		costs(0.95)
-	end
-	copy(weaponDef, "impactonly", "areaofeffect",
-		"corethickness", "explosiongenerator", "intensity", "laserflaresize", "rgbcolor", "thickness", "size",
-		"soundhitdry", "soundhitwet", "soundstart")
-	scaleLaserFX()
+	scaleHeatRay(name, wname)
 end
 
 -- Railguns
@@ -353,11 +349,26 @@ for _, name in ipairs { "legkark", "legamph", "legshot" } do
 end
 
 --------------------------------------------------------------------------------
+-- Drones ----------------------------------------------------------------------
+
+UD.leghive, UD.legfhive = nil, nil
+
+ref = UD.armfig
+for name, wname in pairs { leghive = "plasma", legfhive = "plasma", legspcarrier = "leg_drone_controller", legvcarry = "targeting", leganavyantinukecarrier = "leg_drone_controller" } do
+	UD[name].weapondefs[wname].range = 1600
+	UD[name].weapondefs[wname].customparams.carried_unit = "legfig"
+	UD[name].weapondefs[wname].customparams.controlradius = 1600
+	UD[name].weapondefs[wname].customparams.metalcost = ref.metalcost
+	UD[name].weapondefs[wname].customparams.energycost = ref.energycost
+	UD[name].weapons[1].onlytargetcategory = "VTOL"
+	UD[name].weapons[1].badtargetcategory = "LIGHTAIRSCOUT"
+	costs(0.75)
+end
+
+--------------------------------------------------------------------------------
 -- Nuh-uh ----------------------------------------------------------------------
 
 UD.leglob.weapons[2] = nil
-
-UD.leghive, UD.legfhive = nil, nil
 
 unit("legmg") weapon("armmg_weapon")
 unitDef.cantbetransported = true
@@ -391,14 +402,6 @@ UD.legkam = table.copy(UD.armthund)
 
 table.insert(UD.legap.buildoptions, "corfink")
 
-UD.legspcarrier.weapondefs.leg_drone_controller.customparams.carried_unit = "legfig"
-UD.legspcarrier.weapons[1].onlytargetcategory = "VTOL"
-UD.legspcarrier.weapons[1].badtargetcategory = "LIGHTAIRSCOUT"
-
-unit("legrampart").radardistancejam = nil
-unitDef.weapons[2] = nil
-costs(0.9)
-
 UD.legfloat.movementclass = "MTANK3"
 UD.legfloat.waterline = nil
 UD.legfloat.floater = nil
@@ -406,13 +409,14 @@ UD.legfloat.floater = nil
 unit("leganavybattleship").movementclass = "BOAT9"
 costs(0.88)
 
-unit("leganavyantinukecarrier").weapons[1] = nil
-costs(0.9)
-
 UD.legphoenix = nil
 
 unit("legmineb").weapondefs.cor_seaadvbomb = table.copy(UD.corhurc.weapondefs.coradvbomb)
 costs(0.94)
+
+unit("legrampart").radardistancejam = nil
+unitDef.weapons[2] = nil
+costs(0.9)
 
 UD.legelrpcmech = nil
 
