@@ -351,8 +351,6 @@ end
 --------------------------------------------------------------------------------
 -- Drones ----------------------------------------------------------------------
 
-UD.leghive, UD.legfhive = nil, nil
-
 ref = UD.armfig
 for name, wname in pairs { leghive = "plasma", legfhive = "plasma", legspcarrier = "leg_drone_controller", legvcarry = "targeting", leganavyantinukecarrier = "leg_drone_controller" } do
 	UD[name].weapondefs[wname].range = 1600
