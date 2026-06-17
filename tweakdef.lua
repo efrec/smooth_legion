@@ -186,7 +186,7 @@ end
 
 local function scaleLaserFX(grav)
 	local scale = math.sqrt(damages().default / ref.damage.default) * (grav or 1) + (0.5 - (grav or 1) * 0.5)
-	-- scale = scale / weaponDef.beamtime -- TODO: can never remember the units of this thing, seconds?
+	scale = scale / (weaponDef.beamtime * 30) -- TODO: Check beamburst? idr. idr anything about beams.
 	set(weaponDef, "corethickness", scale)
 	set(weaponDef, "thickness", scale)
 	set(weaponDef, "laserflaresize", scale * 0.1 + 0.9)
