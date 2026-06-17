@@ -1,14 +1,30 @@
 --SMOOTH LEGION
 
 local UD = UnitDefs
+local unitDef, weaponDef, cparams, ref
+local units = {}
+local divisors = { 2, 4, 5, 8, 12, 20, 50, 125, 250 }
+local m2e, m2b = 20, 30
+
+--------------------------------------------------------------------------------
+-- Tests -----------------------------------------------------------------------
 
 if not UD.legcom then
-	Spring.Echo('Error in smooth legion tweadef: Legion not enabled.')
+	Spring.Echo('Error: Legion not enabled.')
 	return
 end
 
---------------------------------------------------------------------------------
--- Initialize ------------------------------------------------------------------
+local function nounit(name)
+	if not unitDef then
+		Spring.Echo("error: missing unitdef", name)
+	end
+end
+
+local function noweapon(name)
+	if not weaponDef then
+		Spring.Echo("error: missing weapondef", name)
+	end
+end
 
 local function deep(tbl)
 	local new = {}
@@ -29,7 +45,7 @@ local function equal(old, new)
 		((old == 1 or old == "true") and new ~= true)
 end
 
-local function tweak(old, new)
+local function diff(old, new)
 	local d = {}
 	for k, v_o in pairs(old) do
 		if type(k) ~= "number" then
@@ -37,7 +53,7 @@ local function tweak(old, new)
 			if v_n == nil then
 				d[k] = "nil"
 			elseif type(v_o) == "table" and type(v_n) == "table" then
-				d[k] = tweak(v_o, v_n)
+				d[k] = diff(v_o, v_n)
 			elseif v_o ~= v_n and (type(v_o) == type(v_n) or equal(v_o, v_n)) then
 				d[k] = v_n
 			end
@@ -53,29 +69,22 @@ local function tweak(old, new)
 	end
 end
 
-local unitDef, weaponDef, cparams, ref
-local units = {}
-local divisors = { 2, 4, 5, 8, 12, 20, 50, 125, 250 }
-local m2e, m2b = 20, 30
+--------------------------------------------------------------------------------
+-- Initialize ------------------------------------------------------------------
 
 local function unit(name)
 	unitDef = UD[name]
+	nounit()
 	if unitDef and not units[name] then
 		units[name] = deep(unitDef)
-	elseif not unitDef then
-		Spring.Echo("error: missing unitdef", name)
 	end
 	return unitDef
 end
 
 local function weapon(name)
-	if not unitDef then
-		Spring.Echo("error: no unitdef for weapon", name)
-	end
+	nounit(name)
 	weaponDef = unitDef.weapondefs[name]
-	if not weaponDef then
-		Spring.Echo("error: missing weapondef", name)
-	end
+	noweapon(name)
 	return weaponDef
 end
 
@@ -427,6 +436,6 @@ UD.legstarfall = table.copy(UD.armvulc)
 
 local tweaks = {}
 for name, old in pairs(units) do
-	tweaks[name] = tweak(old, UD[name])
+	tweaks[name] = diff(old, UD[name])
 end
 Spring.Echo(tweaks)
