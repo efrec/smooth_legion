@@ -186,7 +186,7 @@ end
 
 local function scaleLaserFX(grav)
 	local scale = math.sqrt(damages().default / ref.damage.default) * (grav or 1) + (0.5 - (grav or 1) * 0.5)
-	scale = scale / (weaponDef.beamtime * 30) -- TODO: Check beamburst? idr. idr anything about beams.
+	scale = scale / ((weaponDef.beamtime or (1/30)) * 30)
 	set(weaponDef, "corethickness", scale)
 	set(weaponDef, "thickness", scale)
 	set(weaponDef, "laserflaresize", scale * 0.1 + 0.9)
@@ -332,7 +332,7 @@ weaponDef.damage.vtol = 10
 
 -- Telchine
 UD.legamph.weapondefs.heat_ray = table.copy(UD.cormaw.weapondefs.dmaw)
-UD.legamph.weapondefs.coax_depthcharge = table.copy(UD.cor_mort.weapondefs.cor_mort)
+UD.legamph.weapondefs.coax_depthcharge = table.copy(UD.cormort.weapondefs.cor_mort)
 UD.legamph.weapons[2].onlytargetcategory = "SURFACE"
 
 --------------------------------------------------------------------------------
