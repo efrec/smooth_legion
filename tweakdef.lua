@@ -193,10 +193,6 @@ local function scaleLaserFX(grav)
 end
 
 -- Heat rays
-ref = UD.cormaw.weapondefs.dmaw
-UD.legamph.weapondefs.heat_ray = table.copy(ref)
--- more? maybe?
-
 ref = UD.armllt.weapondefs.arm_lightlaser
 for name, wname in pairs { leginfestor = "festorbeam", leglht = "heat_ray", legsh = "heat_ray", leghelios = "heat_ray" } do
 	unit(name) weapon(wname)
@@ -208,7 +204,6 @@ for name, wname in pairs { leginfestor = "festorbeam", leglht = "heat_ray", legs
 		"soundhitdry", "soundhitwet", "soundstart")
 	scaleLaserFX()
 end
-
 ref = UD.armbeamer.weapondefs.armbeamer_weapon
 for name, wname in pairs { legheavydrone = "heat_ray", leginc = "heatraylarge", legkark = "heat_ray", legbastion = "t2heatray", leganavyflagship = "leg_experimental_heatray", legnavydestro = "leg_medium_heatray", legeheatraymech = "heatray1", legehovertank = "heat_ray", legaheattank = "heat_ray" } do
 	unit(name) weapon(wname)
@@ -235,7 +230,6 @@ for name, wname in pairs { legrail = "railgun", legsrail = "railgunt2", leganavy
 	damages(1.3)
 	scaleLaserFX(0.6667)
 end
-
 ref = UD.armaak.weapondefs.longrangemissile
 for name, wname in pairs { legrail = "aa_railgun", legadvaabot = "aa_railgun" } do
 	unit(name) weapon(wname)
@@ -339,6 +333,11 @@ weaponDef.areaofeffect = 500
 weaponDef.edgeeffectiveness = 0
 weaponDef.damage.default = 300
 weaponDef.damage.vtol = 10
+
+-- Telchine
+UD.legamph.weapondefs.heat_ray = table.copy(UD.cormaw.weapondefs.dmaw)
+UD.legamph.weapondefs.coax_depthcharge = table.copy(UD.cor_mort.weapondefs.cor_mort)
+UD.legamph.weapons[2].onlytargetcategory = "SURFACE"
 
 --------------------------------------------------------------------------------
 -- Reactive armor --------------------------------------------------------------
