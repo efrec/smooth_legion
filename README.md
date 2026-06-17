@@ -1,6 +1,6 @@
 This is Legion as it was meant to be. There are no hard edges. It is perfectly smooth in all directions.
 
-Use this tweak: `!bset tweakdefs <copy and paste contents of encoded.txt>`
+Use this tweak: `!bset tweakdefs <contents of tweakdef_minified_encoding.txt>`
 
 ### What it does
 
@@ -14,7 +14,6 @@ So that finally Gamers can be free. Legion cannot hurt them anymore because it c
 
 Many things in BAR cannot be modified through tweaks. These are generally limits within the unit scripts. However, this is not an exclusive trait of Legion, so is not targeted for removal by this tweak.
 
-- The tweak needs to be minified before it is encoded. The encoded.txt file only works in single player for now, then.
 - The Gelasma is not addressed yet.
 - Some gatling units especially need their owner accuracy weights reduced by half and some spray angle moved into accuracy.
 - Railguns still have their CEG trail effect that follows after the projectile.
