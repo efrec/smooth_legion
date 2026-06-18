@@ -346,17 +346,14 @@ if unit("legmed") then
 end
 
 -- Blindfold
-if unit("legcib") and weapon("juno_pulse_mini") then
-	unitDef[weapons][1].def = "emp_pulse"
-	weaponDef = copyweapon("emp_pulse", weaponDef)
-	unitDef[weapondefs].juno_pulse_mini = nil
-	weaponDef.customparams = nil
-	weaponDef.paralyzer = true
-	weaponDef.paralyzetime = 5
-	weaponDef.areaofeffect = 420
-	weaponDef.edgeeffectiveness = 0
-	weaponDef.damage.default = 300
-	weaponDef.damage.vtol = 10
+if unit("legcib") then
+	unitDef[weapons][1].def = "emp"
+	weaponDef = copyweapon("emp", UD.armstil.weapondefs)
+	weaponDef.areaofeffect = 120
+	weaponDef.damage.default = 400
+	weaponDef.paralyzetime = 10
+	weaponDef.range = unitDef.speed * 3
+	weaponDef.reloadtime = 10
 end
 
 -- Telchine
