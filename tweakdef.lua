@@ -401,13 +401,15 @@ if unit("leglob") then
 	unitDef[weapons][2] = nil
 end
 
-if unit("legmg") and weapon("armmg_weapon") then
-	unitDef.cantbetransported = true
-	costs(1.07)
-	weaponDef.range = 620
-	weaponDef.ownerExpAccWeight = 2
-	weaponDef.accuracy = 100
-	weaponDef.sprayangle = 880
+for name, wname in pairs { legmg = "armmg_weapon", legfmg = "gatling_gun" } do
+	if unit(name) and weapon(wname) then
+		unitDef.cantbetransported = true
+		costs(1.07)
+		weaponDef.range = 620
+		weaponDef.ownerExpAccWeight = 2
+		weaponDef.accuracy = 100
+		weaponDef.sprayangle = 880
+	end
 end
 
 if unit("legfloat") then
