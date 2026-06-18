@@ -70,7 +70,7 @@ local function unit(name)
 	unitDef = UD[name]
 	nounit()
 	if unitDef and not units[name] then
-		units[name] = table.copy(unitDef)
+		units[name] = copy(unitDef)
 	end
 	return unitDef
 end
@@ -88,8 +88,16 @@ local function custom(def)
 	return cparams
 end
 
+local function copy(value)
+	if type(value) == "table" then
+		return table.copy(value)
+	else
+		return value
+	end
+end
+
 local function copyweapon(name, def)
-	local new = table.copy(def or ref)
+	local new = copy(def or ref)
 	unitDef[weapondefs][name] = new
 	return new
 end
@@ -263,7 +271,7 @@ end
 ref = UD.armclaw[weapondefs].dclaw
 for name, wname in pairs { legkark = "legion_shotgun", legcar = "shot", leganavybattleship = "legion_shotgun", legeshotgunmech = "shotgun", legstronghold = "shotgun", leganavaldefturret = "advanced_shotgun" } do
 	if unit(name) and weapon(wname) then
-		copyref(weaponDef, "weapontype", "burstrate", "duration", explosiongenerator, "impulsefactor", "intensity", "soundhit", "soundhitwet", "soundstart", "thickness")
+		copyref(weaponDef, "weapontype", "burstrate", "duration", explosiongenerator, "impulsefactor", "intensity", "soundhit", "soundhitwet", "soundstart", "thickness", "customparams")
 		weaponDef.burst = weaponDef.projectiles
 		weaponDef.projectiles = nil
 		weaponDef.weaponvelocity = weaponDef.range + 20
@@ -432,7 +440,7 @@ if unit("legnavydestro") then
 	ref = UD.legnavyartyship
 	copyref(unitDef, "buildpic", "collisionvolumeoffsets", "collisionvolumescales", "collisionvolumetype", "objectname", "script")
 	copyweapon("depthcharge", UD.corroy[weapondefs].depthcharge)
-	unitDef[weapons][2] = table.copy(UD.corroy[weapons][2])
+	unitDef[weapons][2] = copy(UD.corroy[weapons][2])
 	unitDef[weapondefs].drone_control_matrix = nil
 	costs(1.08)
 end
@@ -446,7 +454,7 @@ if unit("legap") then
 	table.insert(unitDef.buildoptions, "corfink")
 end
 
-UD.legkam = table.copy(UD.armthund)
+UD.legkam = copy(UD.armthund)
 
 UD.legphoenix = nil
 
@@ -468,7 +476,7 @@ if unit("legeallterrainmech") then
 	costs(0.9)
 end
 
-UD.legstarfall = table.copy(UD.armvulc)
+UD.legstarfall = copy(UD.armvulc)
 
 --------------------------------------------------------------------------------
 -- Convert to tweakunits -------------------------------------------------------
