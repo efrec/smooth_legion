@@ -2,13 +2,9 @@
 
 local UD = UnitDefs
 local unitDef, weaponDef, cparams, ref
+local divisors, m2e, m2b = { 2, 4, 5, 8, 12, 20, 50, 125, 250 }, 60, 30
+local weapons, weapondefs, metalcost, energycost, buildtime, onlytargetcategory, badtargetcategory, areaofeffect, edgeeffectiveness, explosiongenerator, weaponvelocity = "weapons", "weapondefs", "metalcost", "energycost", "buildtime", "onlytargetcategory", "badtargetcategory", "areaofeffect", "edgeeffectiveness", "explosiongenerator", "weaponvelocity"
 local units = {}
-local divisors = { 2, 4, 5, 8, 12, 20, 50, 125, 250 }
-local m2e, m2b = 60, 30
-local weapons, weapondefs = "weapons", "weapondefs"
-local metalcost, energycost, buildtime = "metalcost", "energycost", "buildtime"
-local onlytargetcategory = "onlytargetcategory"
-local badtargetcategory = "badtargetcategory"
 
 --------------------------------------------------------------------------------
 -- Tests -----------------------------------------------------------------------
@@ -28,18 +24,6 @@ local function noweapon(name)
 	if not weaponDef then
 		Spring.Echo("error: missing weapondef", name)
 	end
-end
-
-local function deep(tbl)
-	local new = {}
-	for k, v in pairs(tbl) do
-		if type(v) == "table" then
-			new[k] = deep(v)
-		else
-			new[k] = v
-		end
-	end
-	return new
 end
 
 local function equal(old, new)
@@ -80,7 +64,7 @@ local function unit(name)
 	unitDef = UD[name]
 	nounit()
 	if unitDef and not units[name] then
-		units[name] = deep(unitDef)
+		units[name] = table.copy(unitDef)
 	end
 	return unitDef
 end
@@ -111,11 +95,7 @@ local function copyref(def, ...)
 end
 
 local function neat(value, precision)
-	if precision then
-		value = value / precision
-	else
-		precision = 1
-	end
+	value = precision and value / precision or 1
 	if value <= 30 then
 		return math.floor(value + 0.5) * precision
 	end
@@ -128,8 +108,7 @@ local function neat(value, precision)
 	fitness = fitness * fitness / divisors[1]
 	for i = 2, #divisors do
 		local divisor = divisors[i]
-		local fitness2 = values[divisor] - value
-		fitness2 = fitness2 * fitness2 / divisors[i]
+		local fitness2 = (values[divisor] - value) ^ 2 / divisors[1]
 		if fitness > fitness2 then
 			neatest = values[divisor]
 			fitness = fitness2
@@ -140,9 +119,7 @@ end
 
 local function set(tbl, key, mult, add, precision)
 	local value = tonumber(tbl[key])
-	if type(value) == "number" then
-		tbl[key] = neat(value * (mult or 1) + (add or 0), precision)
-	end
+	tbl[key] = value and neat(value * (mult or 1) + (add or 0), precision) or nil
 end
 
 local function costs(mult, add_m, add_e, add_bp)
@@ -209,11 +186,11 @@ end
 -- Heat rays
 local function scaleHeatRay(name, wname)
 	if unit(name) and weapon(wname) then
-		if weaponDef.areaofeffect >= 40 and not weaponDef.impactonly then
+		if weaponDef[areaofeffect] >= 40 and not weaponDef.impactonly then
 			costs(0.95)
 		end
-		copyref(weaponDef, "impactonly", "areaofeffect",
-			"corethickness", "explosiongenerator", "intensity", "laserflaresize", "rgbcolor", "thickness", "size",
+		copyref(weaponDef, "impactonly", areaofeffect,
+			"corethickness", explosiongenerator, "intensity", "laserflaresize", "rgbcolor", "thickness", "size",
 			"soundhitdry", "soundhitwet")
 		scaleLaserFX()
 	end
@@ -234,10 +211,10 @@ for name, wname in pairs { legrail = "railgun", legsrail = "railgunt2", leganavy
 		custom(weaponDef)
 		weaponDef.name = "Heavy Laser"
 		copyref(weaponDef, "weapontype", "beamtime", "impulsefactor", "noexplode",
-			"corethickness", "explosiongenerator", "intensity", "laserflaresize", "rgbcolor", "thickness", "size", "cegtag",
+			"corethickness", explosiongenerator, "intensity", "laserflaresize", "rgbcolor", "thickness", "size", "cegtag",
 			"soundhitdry", "soundhitwet", "soundstart",
 			"cylindertargeting", "impactonly", "predictboost")
-		weaponDef.weaponvelocity = weaponDef.range + 100
+		weaponDef[weaponvelocity] = weaponDef.range + 100
 		cparams.overpenetrate = nil
 		damages(1.3)
 		scaleLaserFX(0.6667)
@@ -257,8 +234,8 @@ end
 ref = UD.armpw
 for name, wname in pairs { legscout = "gun", leggob = "semiauto", legstr = "armmg_weapon", legmg = "armmg_weapon", legfmg = "gatling_gun", legapopupdef = "standard_minigun", leganavaldefturret = "legion_heavy_minigun", leganavycruiser = "mg_guns", legnavyscout = "mg_guns", legjav = "mg_guns", legkeres = "legkeres_gatling", legfloat = "legfloat_gatling", leggat = "armmg_weapon", legfort = "semiauto" } do
 	if unit(name) and weapon(wname) then
-		copyref(weaponDef, "edgeeffectiveness", "explosiongenerator", "gravityaffected", "intensity", "rgbcolor", "size", "soundstart", "weapontype")
-		set(weaponDef, "weaponvelocity", 0.6154)
+		copyref(weaponDef, edgeeffectiveness, explosiongenerator, "gravityaffected", "intensity", "rgbcolor", "size", "soundstart", "weapontype")
+		set(weaponDef, weaponvelocity, 0.6154)
 		set(weaponDef, "ownerExpAccWeight", 0.5)
 		damages(1.0833)
 		costs(1.01)
@@ -273,10 +250,10 @@ for name, wname in pairs { legcen = "gauss", legaskirmtank = "legmgplasma", legm
 		weaponDef.impactonly = false
 		local burst, base = weaponDef.burst, weaponDef.damage.default
 		weaponDef.burst = nil
-		copyref(weaponDef, "impactonly", "impulsefactor", "weaponvelocity", "edgeeffectiveness")
+		copyref(weaponDef, "impactonly", "impulsefactor", weaponvelocity, edgeeffectiveness)
 		damages(burst)
 		local t = math.clamp((weaponDef.damage.default - base) / (ref.damage.default - base), 0, 1 + burst / 3)
-		weaponDef.areaofeffect = math.mix(weaponDef.areaofeffect, ref.areaofeffect, t)
+		weaponDef[areaofeffect] = math.mix(weaponDef[areaofeffect], ref[areaofeffect], t)
 	end
 end
 
@@ -284,7 +261,7 @@ end
 local function toplasma(name, wname, cname)
 	if unit(name) and weapon(wname) then
 		ref = UD.armamb[weapondefs].armamb_gun -- TODO: need existence checks for ref, too.
-		copyref(weaponDef, "cegtag", "explosiongenerator")
+		copyref(weaponDef, "cegtag", explosiongenerator)
 		local count = custom(weaponDef).cluster_number or 5
 		damages(1 + math.sqrt(count * weapon(cname or "cluster_munition").damage.default / weapon(wname).damage.default))
 		cparams.cluster_def, cparams.cluster_number = nil, nil
@@ -303,13 +280,13 @@ toplasma("leganavyartyship", "leg_mobile_cluster_plasma", "cluster_munition_seco
 if unit("legbar") then
 	unitDef.speed = 49
 	weaponDef = copyweapon("clusternapalm", UD.legehovertank[weapondefs].parabolic_rockets)
-	weaponDef.areaofeffect = 56
-	weaponDef.edgeeffectiveness = 0.25
-	weaponDef.explosiongenerator = "custom:genericshellexplosion-small-bomb"
+	weaponDef[areaofeffect] = 56
+	weaponDef[edgeeffectiveness] = 0.25
+	weaponDef[explosiongenerator] = "custom:genericshellexplosion-small-bomb"
 	weaponDef.burst = 3
 	weaponDef.burstrate = 0.4
 	weaponDef.range = 610
-	weaponDef.weaponvelocity = 260
+	weaponDef[weaponvelocity] = 260
 end
 
 if unit("legbart") then
@@ -324,7 +301,7 @@ if unit("leginf") then
 	weaponDef.reloadtime = 2
 	weaponDef.mygravity = 0.18
 	weaponDef.range = 1200
-	weaponDef.weaponvelocity = 460
+	weaponDef[weaponvelocity] = 460
 end
 
 if unit("legperdition") then
@@ -349,11 +326,11 @@ end
 if unit("legcib") then
 	unitDef[weapons][1].def = "emp"
 	weaponDef = copyweapon("emp", UD.armstil.weapondefs)
-	weaponDef.areaofeffect = 120
-	weaponDef.damage.default = 400
+	weaponDef[areaofeffect] = 120
 	weaponDef.paralyzetime = 10
 	weaponDef.range = unitDef.speed * 3
 	weaponDef.reloadtime = 10
+	damages(1 / 15)
 end
 
 -- Telchine
@@ -389,8 +366,7 @@ for name, wname in pairs { leghive = "plasma", legfhive = "plasma", legspcarrier
 		ref[badtargetcategory] = "LIGHTAIRSCOUT"
 		weaponDef.range = 1600
 		ref = UD.armfig
-		custom(weaponDef)
-		copyref(cparams, metalcost, energycost)
+		copyref(custom(weaponDef), metalcost, energycost)
 		cparams.carried_unit = "legfig"
 		cparams.controlradius = 1600
 	end
