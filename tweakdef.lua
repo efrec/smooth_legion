@@ -136,20 +136,19 @@ local function set(tbl, key, mult, add, precision)
 end
 
 local function costs(mult, add_m, add_e, add_bp)
-	local u = unitDef
 	if not add_m then add_m = 0 end
 	if not add_e then
-		add_e = add_m * (u.metalcost and u.metalcost > 0 and u.energycost / u.metalcost or m2e)
+		add_e = add_m * (unitDef.metalcost and unitDef.metalcost > 0 and unitDef.energycost / unitDef.metalcost or m2e)
 	end
 	if not add_bp then
-		add_bp = add_m * (u.metalcost and u.metalcost > 0 and u.buildtime / u.metalcost or m2b)
+		add_bp = add_m * (unitDef.metalcost and unitDef.metalcost > 0 and unitDef.buildtime / unitDef.metalcost or m2b)
 	end
-	local metal = neat(u.metalcost * mult + add_m, 10)
-	local ratio = metal / u.metalcost
-	u.metalcost = metal
-	set(u, "energycost", mult, add_e, 10)
-	set(u, "buildtime", mult, add_bp, 10)
-	for _, fd in pairs(u.featuredefs or {}) do
+	local metal = neat(unitDef.metalcost * mult + add_m, 10)
+	local ratio = metal / unitDef.metalcost
+	unitDef.metalcost = metal
+	set(unitDef, "energycost", mult, add_e, 10)
+	set(unitDef, "buildtime", mult, add_bp, 10)
+	for _, fd in pairs(unitDef.featuredefs or {}) do
 		fd.metal = math.floor(ratio * fd.metal + 0.5)
 	end
 end
