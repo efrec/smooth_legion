@@ -241,6 +241,26 @@ for name, wname in pairs { legscout = "gun", leggob = "semiauto", legstr = "armm
 		costs(1.01)
 	end
 end
+ref = UD.armfig[weapondefs].armvtol_missile
+for name, wname in pairs { legfig = "semiauto", legafigdef = "leggun" } do
+	if unit(name) and weapon(wname) then
+		local dps, range = weaponDef.damage.vtol / weaponDef.reloadtime, weaponDef.range
+		weaponDef = copyweapon(wname, ref)
+		weaponDef.range = range
+		damages(dps / ref.damage.vtol * ref.reloadtime)
+		unitDef[weapons][1].maxangledif = nil
+	end
+end
+
+-- Shotguns
+ref = UD.armclaw.weapondefs.dclaw
+for name, wname in pairs { legkark = "legion_shotgun", legcar = "shot", leganavybattleship = "legion_shotgun", legeshotgunmech = "shotgun", legstronghold = "legion_shotgun", leganavaldefturret = "advanced_shotgun" } do
+	unit(name)
+	copyref(weapon(wname), "weapontype", "burstrate", "duration", explosiongenerator, "impulsefactor", "intensity", "soundhit", "soundhitwet", "soundstart", "thickness")
+	weaponDef.burst = weaponDef.projectiles
+	weaponDef.projectiles = nil
+	weaponDef.weaponvelocity = weaponDef.range + 20
+end
 
 -- Burst plasma
 ref = UD.correap[weapondefs].cor_reap
@@ -416,13 +436,6 @@ end
 
 if unit("legap") then
 	table.insert(unitDef.buildoptions, "corfink")
-end
-
-if unit("legfig") then
-	ref = UD.armfig
-	copyref(unitDef, buildtime, energycost, metalcost, "speed", "turnradius")
-	copyweapon("semiauto", ref[weapondefs].armvtol_missile)
-	unitDef[weapons][1].maxangledif = nil
 end
 
 UD.legkam = table.copy(UD.armthund)
