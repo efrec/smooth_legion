@@ -147,8 +147,8 @@ end
 
 local function costs(mult, add_m, add_e, add_bp)
 	add_m = add_m or 0
-	add_e = add_e or add_m * (unitDef[metalcost] and unitDef[metalcost] > 0 and unitDef[energycost] / unitDef[metalcost] or m2e)
-	add_bp = add_bp or add_m * (unitDef[metalcost] and unitDef[metalcost] > 0 and unitDef[buildtime] / unitDef[metalcost] or m2b)
+	add_e = add_e or add_m * ((unitDef[metalcost] or 0) > 0 and unitDef[energycost] / unitDef[metalcost] or m2e)
+	add_bp = add_bp or add_m * ((unitDef[metalcost] or 0) > 0 and unitDef[buildtime] / unitDef[metalcost] or m2b)
 	set(unitDef, metalcost, mult, add_m, 10)
 	set(unitDef, energycost, mult, add_e, 10)
 	set(unitDef, buildtime, mult, add_bp, 10)
@@ -379,18 +379,18 @@ end
 --------------------------------------------------------------------------------
 -- Drones ----------------------------------------------------------------------
 
-ref = UD.armfig
 for name, wname in pairs { leghive = "plasma", legfhive = "plasma", legspcarrier = "leg_drone_controller", legvcarry = "targeting", leganavyantinukecarrier = "leg_drone_controller" } do
 	if unit(name) and weapon(wname) then
 		costs(0.75)
-		unitDef[weapons][1][onlytargetcategory] = "VTOL"
-		unitDef[weapons][1][badtargetcategory] = "LIGHTAIRSCOUT"
+		ref = unitDef[weapons][1]
+		ref[onlytargetcategory] = "VTOL"
+		ref[badtargetcategory] = "LIGHTAIRSCOUT"
 		weaponDef.range = 1600
+		ref = UD.armfig
 		custom(weaponDef)
+		copyref(cparams, metalcost, energycost)
 		cparams.carried_unit = "legfig"
 		cparams.controlradius = 1600
-		cparams[metalcost] = ref[metalcost]
-		cparams[energycost] = ref[energycost]
 	end
 end
 
