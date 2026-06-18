@@ -21,7 +21,7 @@ $substitutions = @{
 	'(?sm)\A--[\s\S]+?(?=^local)'                                          = "--$lobbymsg`n"
 	# Remove testing code used for Rapid Iteration Development (writing shit code and then running it):
 	'(?sm)^-- Tests[\s\S]+?(?=^-- Initialize)'                             = ''
-	'(?sm)^\s*no(?:unit|weapon|defref)\(\w*\)\r\n'                         = ''
+	'(?sm)^\s*no(?:unit|weapon|defref)\([^\)]\)\r\n'                       = ''
 	# Remove the rest of the tweakdefs => tweakunits conversion code. Should just remove this entirely:
 	'local units = \{\}\r?\n'                                              = ''
 	'(?sm)\r?\nlocal function (deep|diff|dumb_equal)[\s\S\r\n]+?^end\r?\n' = ''
