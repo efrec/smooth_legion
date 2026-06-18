@@ -14,8 +14,5 @@ So that finally Gamers can be free. Legion cannot hurt them anymore because it c
 
 Many things in BAR cannot be modified through tweaks. These are generally limits within the unit scripts. However, this is not an exclusive trait of Legion, so is not targeted for removal by this tweak.
 
-- The Gelasma is not addressed yet.
-- Some gatling units especially need their owner accuracy weights reduced by half and some spray angle moved into accuracy.
-- Railguns still have their CEG trail effect that follows after the projectile.
 - Non-cluster plasma looks way too cool which is not very Smooth.
-- Some units are still using LaserCannon-based machine guns which is not very Smooth.
+- The code is increasingly deranged to fit under 10k characters (the limit is 16k).
