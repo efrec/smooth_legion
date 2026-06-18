@@ -259,7 +259,7 @@ end
 ref = UD.armfig[weapondefs].armvtol_missile
 for name, wname in pairs { legfig = "semiauto", legafigdef = "leggun" } do
 	if unit(name) and weapon(wname) then
-		local dps, range = weaponDef.damage.vtol / weaponDef.reloadtime, weaponDef.range
+		local dps, range = weaponDef.damage.vtol * (weaponDef.burst or 1) / weaponDef.reloadtime, weaponDef.range
 		weaponDef = copyweapon(wname, ref)
 		weaponDef.range = range
 		damages(dps / ref.damage.vtol * ref.reloadtime)
