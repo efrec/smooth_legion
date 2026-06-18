@@ -234,7 +234,7 @@ for name, wname in pairs { legrail = "railgun", legsrail = "railgunt2", leganavy
 		custom(weaponDef)
 		weaponDef.name = "Heavy Laser"
 		copyref(weaponDef, "weapontype", "beamtime", "impulsefactor", "noexplode",
-			"corethickness", "explosiongenerator", "intensity", "laserflaresize", "rgbcolor", "thickness", "size",
+			"corethickness", "explosiongenerator", "intensity", "laserflaresize", "rgbcolor", "thickness", "size", "cegtag",
 			"soundhitdry", "soundhitwet", "soundstart",
 			"cylindertargeting", "impactonly", "predictboost")
 		weaponDef.weaponvelocity = weaponDef.range + 100
