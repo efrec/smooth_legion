@@ -210,8 +210,7 @@ ref = UD.corhlt[weapondefs].cor_laserh1
 for name, wname in pairs { legrail = "railgun", legsrail = "railgunt2", leganavyflagship = "leg_experimental_railgun", legerailtank = "t3_rail_accelerator" } do
 	if unit(name) and weapon(wname) then
 		custom(weaponDef)
-		weaponDef.name = "Heavy Laser"
-		copyref(weaponDef, "weapontype", "beamtime", "impulsefactor", "noexplode",
+		copyref(weaponDef, "weapontype", "beamtime", "impulsefactor", "noexplode", "name",
 			"corethickness", explosiongenerator, "intensity", "laserflaresize", "rgbcolor", "thickness", "size", "cegtag",
 			"soundhitdry", "soundhitwet", "soundstart",
 			"cylindertargeting", "impactonly", "predictboost")
@@ -326,7 +325,7 @@ end
 -- Blindfold
 if unit("legcib") then
 	unitDef[weapons][1].def = "emp"
-	weaponDef = copyweapon("emp", UD.armstil.weapondefs)
+	weaponDef = copyweapon("emp", UD.armstil.weapondefs.stiletto_bomb)
 	weaponDef[areaofeffect] = 120
 	weaponDef.paralyzetime = 10
 	weaponDef.range = unitDef.speed * 3
