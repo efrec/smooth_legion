@@ -246,13 +246,12 @@ end
 ref = UD.correap[weapondefs].cor_reap
 for name, wname in pairs { legcen = "gauss", legaskirmtank = "legmgplasma", legmrv = "quickshot_cannon", leganavybattleship = "burst_plasma_t2", } do
 	if unit(name) and weapon(wname) then
-		weaponDef.name = "Medium Plasma Cannon"
-		weaponDef.impactonly = false
-		local burst, base = weaponDef.burst, weaponDef.damage.default
+		local burst = weaponDef.burst
+		copyref(weaponDef, name, "impactonly", "impulsefactor", weaponvelocity, edgeeffectiveness)
 		weaponDef.burst = nil
-		copyref(weaponDef, "impactonly", "impulsefactor", weaponvelocity, edgeeffectiveness)
+		weaponDef.impactonly = nil
 		damages(burst)
-		local t = math.clamp((weaponDef.damage.default - base) / (ref.damage.default - base), 0, 1 + burst / 3)
+		local t = math.clamp((weaponDef.damage.default * (1 - 1 / burst)) / ref.damage.default, 0, 1 + (burst - 1) / 10)
 		weaponDef[areaofeffect] = math.mix(weaponDef[areaofeffect], ref[areaofeffect], t)
 	end
 end
