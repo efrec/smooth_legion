@@ -209,7 +209,7 @@ end
 -- Heat rays
 local function scaleHeatRay(name, wname)
 	if unit(name) and weapon(wname) then
-		if weaponDef.areaofeffect >= 40 and weaponDef.impactonly ~= 1 then
+		if weaponDef.areaofeffect >= 40 and not weaponDef.impactonly then
 			costs(0.95)
 		end
 		copyref(weaponDef, "impactonly", "areaofeffect",
@@ -245,13 +245,23 @@ for name, wname in pairs { legrail = "railgun", legsrail = "railgunt2", leganavy
 end
 for name, wname in pairs { legrail = "aa_railgun", legadvaabot = "aa_railgun" } do
 	if unit(name) and weapon(wname) then
-		local range = weaponDef.range
-		local vtol = weaponDef.damage.vtol
-		local reloadtime = weaponDef.reloadtime
+		local range, vtol, reloadtime = weaponDef.range, weaponDef.damage.vtol, weaponDef.reloadtime
 		weaponDef = copyweapon(wname, UD.armaak[weapondefs].longrangemissile)
 		weaponDef.range = range
 		weaponDef.damage.vtol = vtol
 		weaponDef.reloadtime = reloadtime
+	end
+end
+
+-- Machine guns
+ref = UD.armpw
+for name, wname in pairs { legscout = "gun", leggob = "semiauto", legstr = "armmg_weapon", legmg = "armmg_weapon", legfmg = "gatling_gun", legapopupdef = "standard_minigun", leganavaldefturret = "legion_heavy_minigun", leganavycruiser = "mg_guns", legnavyscout = "mg_guns", legjav = "mg_guns", legkeres = "legkeres_gatling", legfloat = "legfloat_gatling", leggat = "armmg_weapon", legfort = "semiauto" } do
+	if unit(name) and weapon(wname) then
+		copyref(weaponDef, "edgeeffectiveness", "explosiongenerator", "gravityaffected", "intensity", "rgbcolor", "size", "soundstart", "weapontype")
+		set(weaponDef, "weaponvelocity", 0.6154)
+		set(weaponDef, "ownerExpAccWeight", 0.5)
+		damages(1.0833)
+		costs(1.01)
 	end
 end
 
@@ -261,11 +271,10 @@ for name, wname in pairs { legcen = "gauss", legaskirmtank = "legmgplasma", legm
 	if unit(name) and weapon(wname) then
 		weaponDef.name = "Medium Plasma Cannon"
 		weaponDef.impactonly = false
-		local burst = weaponDef.burst
-		copyref(weaponDef, "impactonly", "impulsefactor", "weaponvelocity", "edgeeffectiveness")
-		local base = weaponDef.damage.default
-		damages(burst)
+		local burst, base = weaponDef.burst, weaponDef.damage.default
 		weaponDef.burst = nil
+		copyref(weaponDef, "impactonly", "impulsefactor", "weaponvelocity", "edgeeffectiveness")
+		damages(burst)
 		local t = math.clamp((weaponDef.damage.default - base) / (ref.damage.default - base), 0, 1 + burst / 3)
 		weaponDef.areaofeffect = math.mix(weaponDef.areaofeffect, ref.areaofeffect, t)
 	end
@@ -329,10 +338,6 @@ if unit("legmed") then
 	unitDef[weapons][2][badtargetcategory] = "VTOL"
 	unitDef[weapons][2].slaveto = nil
 	weapon("legmed_missile").customparams = {
-		cruise_max_height = 40,
-		cruise_min_height = 15,
-		lockon_dist = 100,
-		speceffect = "cruise",
 		projectile_destruction_method = "descend",
 		overrange_distance = 1093,
 	}
@@ -404,11 +409,10 @@ end
 for name, wname in pairs { legmg = "armmg_weapon", legfmg = "gatling_gun" } do
 	if unit(name) and weapon(wname) then
 		unitDef.cantbetransported = true
-		costs(1.07)
-		weaponDef.range = 620
-		weaponDef.ownerExpAccWeight = 2
+		weaponDef.range = 625
 		weaponDef.accuracy = 100
 		weaponDef.sprayangle = 880
+		costs(1.07)
 	end
 end
 
