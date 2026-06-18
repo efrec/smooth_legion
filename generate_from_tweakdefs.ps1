@@ -21,7 +21,7 @@ $substitutions = @{
 	'(?sm)\A--[\s\S]+?(?=^local)'                                          = "--$lobbymsg`n"
 	# Remove testing code used for Rapid Iteration Development (writing shit code and then running it):
 	'(?sm)^-- Tests[\s\S]+?(?=^-- Initialize)'                             = ''
-	'(?sm)^\s*no(?:unit|weapon)\(\w*\)\r\n'                                = ''
+	'(?sm)^\s*no(?:unit|weapon|defref)\(\w*\)\r\n'                         = ''
 	# Remove the rest of the tweakdefs => tweakunits conversion code. Should just remove this entirely:
 	'local units = \{\}\r?\n'                                              = ''
 	'(?sm)\r?\nlocal function (deep|diff|dumb_equal)[\s\S\r\n]+?^end\r?\n' = ''
@@ -64,7 +64,8 @@ if (Test-Path $base_dir\$too_long) { Remove-Item $base_dir\$too_long -Force }
 if ($min_code_content.Length -gt 16000) {
 	Write-Warning -Message "Minified, encoded tweak ($min_code) is too long for online."
 	Set-Content -Path $base_dir\$too_long -Value "$min_code is too long for online."
-} else { Out-Host -InputObject "Minified, encoded tweak is $($min_code_content.Length) characters." }
+}
+else { Out-Host -InputObject "Minified, encoded tweak is $($min_code_content.Length) characters." }
 
 # The gist contains portions of code and encoded-code in a markdown document.
 $markdown = Get-Content -Path $base_dir\$template -Raw | Out-String
