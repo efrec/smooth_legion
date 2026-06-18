@@ -5,7 +5,7 @@ if (-not (Get-Command luamin -EA 0)) { npm install -g luamin }
 
 #-- Config ---------------------------------------------------------------------
 
-$lobbymsg = "SMOOTH LEGION"
+$lobbymsg = 'SMOOTH LEGION'
 $base_dir = 'D:\vscode\proj\beyond-all-reason\smooth_legion'
 $tweakdef = 'tweakdef.lua'
 $encoding = 'tweakdef_encoding.txt'
@@ -14,6 +14,7 @@ $min_code = 'tweakdef_minified_encoding.txt'
 $too_long = 'tweakdef_minified_encoding_too_long.txt'
 $template = 'template.md'
 $git_gist = 'gist.md'
+$git_repo = 'smooth_legion'
 
 $substitutions = @{
 	# Sets a lobby message for the tweak. It should be short but must be unique and descriptive enough:
@@ -35,6 +36,8 @@ $inserts = @{
 }
 
 #-- Code -----------------------------------------------------------------------
+
+Set-Location -Path $base_dir # You're not in $PSScriptRoot, so mind yourself.
 
 $tweakdef_content = Get-Content -Path $base_dir\$tweakdef -Raw | Out-String
 
@@ -68,3 +71,9 @@ $markdown = Get-Content -Path $base_dir\$template -Raw | Out-String
 $markdown = [regex]::Replace($markdown, $inserts.tweakdefs, ('```lua', $friendly_content, '```' -join "`n"))
 $markdown = [regex]::Replace($markdown, $inserts.encoding, ('>', $min_code_content -join ' '))
 Set-Content -Path $base_dir\$git_gist -Value $markdown -NoNewline -Force -EA 0
+
+if ($git_repo -ieq (Split-Path -Leaf (git rev-parse --show-toplevel))) {
+	git add .
+	git commit -m "$($min_code_content.Length) characters"
+	git push origin main
+}
