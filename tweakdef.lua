@@ -231,7 +231,7 @@ for name, wname in pairs { legrail = "aa_railgun", legadvaabot = "aa_railgun" } 
 end
 
 -- Machine guns
-ref = UD.armpw
+ref = UD.armpw[weapondefs].emg
 for name, wname in pairs { legscout = "gun", leggob = "semiauto", legstr = "armmg_weapon", legmg = "armmg_weapon", legfmg = "gatling_gun", legapopupdef = "standard_minigun", leganavaldefturret = "legion_heavy_minigun", leganavycruiser = "mg_guns", legnavyscout = "mg_guns", legjav = "mg_guns", legkeres = "legkeres_gatling", legfloat = "legfloat_gatling", leggat = "armmg_weapon", legfort = "semiauto" } do
 	if unit(name) and weapon(wname) then
 		copyref(weaponDef, edgeeffectiveness, explosiongenerator, "gravityaffected", "intensity", "rgbcolor", "size", "soundstart", "weapontype")
