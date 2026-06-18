@@ -184,8 +184,8 @@ end
 -- Weapon conversions ----------------------------------------------------------
 
 local function scaleLaserFX(grav)
-	local scale = math.sqrt(damages().default / ref.damage.default) * (grav or 1) + (0.5 - (grav or 1) * 0.5)
-	scale = scale / ((weaponDef.beamtime or (1/30)) * 30)
+	local scale = (damages().default / ref.damage.default) ^ 0.4 * (grav or 1) + (0.5 - (grav or 1) * 0.5)
+	scale = scale / ((weaponDef.beamtime or (1/30)) * 30) ^ 0.4
 	set(weaponDef, "corethickness", scale)
 	set(weaponDef, "thickness", scale)
 	set(weaponDef, "laserflaresize", scale * 0.1 + 0.9)

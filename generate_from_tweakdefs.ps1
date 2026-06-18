@@ -58,6 +58,7 @@ Set-Content -Path $base_dir\$minified -Value $minified_content -NoNewline -Force
 $min_code_content = [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes([string] $minified_content))
 $min_code_content = $min_code_content.TrimEnd('=') -replace '\+', '-' -replace '/', '_'
 Set-Content -Path $base_dir\$min_code -Value $min_code_content -NoNewline -Force -EA 0
+# Set-Clipboard -Text $min_code_content # Gotta go fast
 
 # Be extremely loud about over-long encoded tweakdefs.
 if (Test-Path $base_dir\$too_long) { Remove-Item $base_dir\$too_long -Force }
