@@ -271,7 +271,7 @@ end
 ref = UD.armclaw[weapondefs].dclaw
 for name, wname in pairs { legkark = "legion_shotgun", legcar = "shot", leganavybattleship = "legion_shotgun", legeshotgunmech = "shotgun", legstronghold = "shotgun", leganavaldefturret = "advanced_shotgun" } do
 	if unit(name) and weapon(wname) then
-		copyref(weaponDef, "weapontype", "burstrate", "duration", explosiongenerator, "impulsefactor", "intensity", "soundhit", "soundhitwet", "soundstart", "thickness", "customparams")
+		copyref(weaponDef, "weapontype", "accuracy", "sprayangle", "burstrate", "duration", explosiongenerator, "impulsefactor", "intensity", "soundhit", "soundhitwet", "soundstart", "thickness", "customparams")
 		weaponDef.burst = weaponDef.projectiles * (weaponDef.burst or 1)
 		weaponDef.projectiles = nil
 		weaponDef.weaponvelocity = weaponDef.range + 20
