@@ -146,15 +146,10 @@ local function set(tbl, key, mult, add, precision)
 end
 
 local function costs(mult, add_m, add_e, add_bp)
-	if not add_m then add_m = 0 end
-	if not add_e then
-		add_e = add_m * (unitDef[metalcost] and unitDef[metalcost] > 0 and unitDef[energycost] / unitDef[metalcost] or m2e)
-	end
-	if not add_bp then
-		add_bp = add_m * (unitDef[metalcost] and unitDef[metalcost] > 0 and unitDef[buildtime] / unitDef[metalcost] or m2b)
-	end
-	local metal = neat(unitDef[metalcost] * mult + add_m, 10)
-	unitDef[metalcost] = metal
+	add_m = add_m or 0
+	add_e = add_e or add_m * (unitDef[metalcost] and unitDef[metalcost] > 0 and unitDef[energycost] / unitDef[metalcost] or m2e)
+	add_bp = add_bp or add_m * (unitDef[metalcost] and unitDef[metalcost] > 0 and unitDef[buildtime] / unitDef[metalcost] or m2b)
+	set(unitDef, metalcost, mult, add_m, 10)
 	set(unitDef, energycost, mult, add_e, 10)
 	set(unitDef, buildtime, mult, add_bp, 10)
 end
