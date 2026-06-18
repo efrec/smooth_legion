@@ -253,7 +253,7 @@ for name, wname in pairs { legfig = "semiauto", legafigdef = "leggun" } do
 end
 
 -- Shotguns
-ref = UD.armclaw.weapondefs.dclaw
+ref = UD.armclaw[weapondefs].dclaw
 for name, wname in pairs { legkark = "legion_shotgun", legcar = "shot", leganavybattleship = "legion_shotgun", legeshotgunmech = "shotgun", legstronghold = "legion_shotgun", leganavaldefturret = "advanced_shotgun" } do
 	unit(name)
 	copyref(weapon(wname), "weapontype", "burstrate", "duration", explosiongenerator, "impulsefactor", "intensity", "soundhit", "soundhitwet", "soundstart", "thickness")
