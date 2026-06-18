@@ -95,7 +95,8 @@ local function copyref(def, ...)
 end
 
 local function neat(value, precision)
-	value = precision and value / precision or 1
+	precision = precision or 1
+	value = value / precision
 	if value <= 30 then
 		return math.floor(value + 0.5) * precision
 	end
