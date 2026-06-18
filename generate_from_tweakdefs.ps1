@@ -73,7 +73,7 @@ $markdown = [regex]::Replace($markdown, $inserts.encoding, ('>', $min_code_conte
 Set-Content -Path $base_dir\$git_gist -Value $markdown -NoNewline -Force -EA 0
 
 # Autosync to git requires that the tweak is even smaller in size than normal.
-if ($git_repo -ieq (Split-Path -Leaf (git rev-parse --show-toplevel)) -and $min_code_content.Length -le 10000) {
+if ($git_repo -ieq (Split-Path -Leaf (git rev-parse --show-toplevel)) -and $min_code_content.Length -le 12000) {
 	git add .
 	git commit -m "$($min_code_content.Length) characters"
 	git push origin main
