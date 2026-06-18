@@ -26,6 +26,12 @@ local function noweapon(name)
 	end
 end
 
+local function norefdef(def, ...)
+	if not def or not ref then
+		Spring.Echo("error: missing def/ref", ...)
+	end
+end
+
 local function equal(old, new)
 	return
 		(type(old) == "string" and tonumber(old) and tonumber(old) ~= new) or
@@ -89,6 +95,7 @@ local function copyweapon(name, def)
 end
 
 local function copyref(def, ...)
+	norefdef(def, ...)
 	for _, property in ipairs({ ... }) do
 		def[property] = ref[property]
 	end
@@ -254,12 +261,13 @@ end
 
 -- Shotguns
 ref = UD.armclaw[weapondefs].dclaw
-for name, wname in pairs { legkark = "legion_shotgun", legcar = "shot", leganavybattleship = "legion_shotgun", legeshotgunmech = "shotgun", legstronghold = "legion_shotgun", leganavaldefturret = "advanced_shotgun" } do
-	unit(name)
-	copyref(weapon(wname), "weapontype", "burstrate", "duration", explosiongenerator, "impulsefactor", "intensity", "soundhit", "soundhitwet", "soundstart", "thickness")
-	weaponDef.burst = weaponDef.projectiles
-	weaponDef.projectiles = nil
-	weaponDef.weaponvelocity = weaponDef.range + 20
+for name, wname in pairs { legkark = "legion_shotgun", legcar = "shot", leganavybattleship = "legion_shotgun", legeshotgunmech = "shotgun", legstronghold = "shotgun", leganavaldefturret = "advanced_shotgun" } do
+	if unit(name) and weapon(wname) then
+		copyref(weaponDef, "weapontype", "burstrate", "duration", explosiongenerator, "impulsefactor", "intensity", "soundhit", "soundhitwet", "soundstart", "thickness")
+		weaponDef.burst = weaponDef.projectiles
+		weaponDef.projectiles = nil
+		weaponDef.weaponvelocity = weaponDef.range + 20
+	end
 end
 
 -- Burst plasma
