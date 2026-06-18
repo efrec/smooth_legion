@@ -94,7 +94,13 @@ local function custom(def)
 	return cparams
 end
 
-local function copy(def, ...)
+local function copyweapon(name, def)
+	local new = table.copy(def or ref)
+	unitDef.weapondefs[name] = new
+	return new
+end
+
+local function copyref(def, ...)
 	for _, property in ipairs({ ... }) do
 		def[property] = ref[property]
 	end
@@ -168,8 +174,8 @@ ref[1].onlytargetcategory = "NOTSUB"
 ref[1].fastautoretargeting = true
 ref[4] = nil
 ref = UD.armcom.weapondefs
-unitDef.weapondefs.legcomlaser = table.copy(ref.armcomlaser)
-unitDef.weapondefs.torpedo = table.copy(ref.armcomsealaser)
+copyweapon("legcomlaser", ref.armcomlaser)
+copyweapon("torpedo", ref.armcomsealaser)
 
 --------------------------------------------------------------------------------
 -- Basic economy ---------------------------------------------------------------
@@ -182,7 +188,7 @@ end
 --------------------------------------------------------------------------------
 -- Make T1.5 units smoother ----------------------------------------------------
 
-for _, name in ipairs { "legkark", "leggat" } do
+for _, name in pairs { "legkark", "leggat" } do
 	if unit(name) then
 		costs(0.9)
 		set(unitDef, "health", 0.9)
@@ -211,7 +217,7 @@ local function scaleHeatRay(name, wname)
 		if weaponDef.areaofeffect >= 40 and weaponDef.impactonly ~= 1 then
 			costs(0.95)
 		end
-		copy(weaponDef, "impactonly", "areaofeffect",
+		copyref(weaponDef, "impactonly", "areaofeffect",
 			"corethickness", "explosiongenerator", "intensity", "laserflaresize", "rgbcolor", "thickness", "size",
 			"soundhitdry", "soundhitwet")
 		scaleLaserFX()
@@ -232,7 +238,7 @@ for name, wname in pairs { legrail = "railgun", legsrail = "railgunt2", leganavy
 	if unit(name) and weapon(wname) then
 		custom(weaponDef)
 		weaponDef.name = "Heavy Laser"
-		copy(weaponDef, "weapontype", "beamtime", "impulsefactor", "noexplode",
+		copyref(weaponDef, "weapontype", "beamtime", "impulsefactor", "noexplode",
 			"corethickness", "explosiongenerator", "intensity", "laserflaresize", "rgbcolor", "thickness", "size",
 			"soundhitdry", "soundhitwet", "soundstart",
 			"cylindertargeting", "impactonly", "predictboost")
@@ -242,18 +248,15 @@ for name, wname in pairs { legrail = "railgun", legsrail = "railgunt2", leganavy
 		scaleLaserFX(0.6667)
 	end
 end
-ref = UD.armaak.weapondefs.longrangemissile
 for name, wname in pairs { legrail = "aa_railgun", legadvaabot = "aa_railgun" } do
 	if unit(name) and weapon(wname) then
-		weaponDef.name = "Long-Range Anti-Air Missile Launcher"
 		local range = weaponDef.range
 		local vtol = weaponDef.damage.vtol
 		local reloadtime = weaponDef.reloadtime
-		local new = table.copy(ref)
-		new.range = range
-		new.vtol = vtol
-		new.reloadtime = reloadtime
-		unitDef.weapondefs[wname] = new
+		weaponDef = copyweapon(wname, UD.armaak.weapondefs.longrangemissile)
+		weaponDef.range = range
+		weaponDef.damage.vtol = vtol
+		weaponDef.reloadtime = reloadtime
 	end
 end
 
@@ -264,7 +267,7 @@ for name, wname in pairs { legcen = "gauss", legaskirmtank = "legmgplasma", legm
 		weaponDef.name = "Medium Plasma Cannon"
 		weaponDef.impactonly = false
 		local burst = weaponDef.burst
-		copy(weaponDef, "impactonly", "impulsefactor", "weaponvelocity", "edgeeffectiveness")
+		copyref(weaponDef, "impactonly", "impulsefactor", "weaponvelocity", "edgeeffectiveness")
 		local base = weaponDef.damage.default
 		damages(burst)
 		weaponDef.burst = nil
@@ -274,21 +277,19 @@ for name, wname in pairs { legcen = "gauss", legaskirmtank = "legmgplasma", legm
 end
 
 -- Cluster plasma
-ref = UD.armamb.weapondefs.armamb_gun
 local function toplasma(name, wname, cname)
 	if unit(name) and weapon(wname) then
-		custom(weaponDef)
-		copy(weaponDef, "cegtag", "explosiongenerator")
-		local count = cparams.cluster_number or 5
-		local damage = unitDef.weapondefs[cname or "cluster_munition"].damage.default
-		damages(1 + math.sqrt(count * damage / weaponDef.damage.default))
+		ref = UD.armamb.weapondefs.armamb_gun -- TODO: need existence checks for ref, too.
+		copyref(weaponDef, "cegtag", "explosiongenerator")
+		local count = custom(weaponDef).cluster_number or 5
+		damages(1 + math.sqrt(count * weapon(cname or "cluster_munition").damage.default / weapon(wname).damage.default))
 		cparams.cluster_def, cparams.cluster_number = nil, nil
 	end
 end
-for name, wname in pairs { legamcluster = "cluster_artillery", legcluster = "plasma", legacluster = "plasma", leglrpc = "lrpc", legeallterrainmech = "plasma_low", leganavyartyship = "leg_cluster_artillery_cannon" } do
+for name, wname in pairs { legamcluster = "cluster_artillery", legcluster = "plasma", legacluster = "plasma", leglrpc = "lrpc", legeallterrainmech = "plasma_low" } do
 	toplasma(name, wname)
 end
-for name, wname in pairs { legcluster = "plasma_high", legacluster = "plasma_high", legeallterrainmech = "plasma_high", leganavyartyship = "leg_cluster_artillery_cannon_2" } do
+for name, wname in pairs { legcluster = "plasma_high", legacluster = "plasma_high", legeallterrainmech = "plasma_high" } do
 	toplasma(name, wname)
 end
 toplasma("leganavyartyship", "leg_mobile_cluster_lrpc_cannon", "cluster_munition_main")
@@ -297,8 +298,7 @@ toplasma("leganavyartyship", "leg_mobile_cluster_plasma", "cluster_munition_seco
 -- Napalm
 if unit("legbar") then
 	unitDef.speed = 49
-	unitDef.weapondefs.clusternapalm = table.copy(UD.legehovertank.weapondefs.parabolic_rockets)
-	weapon("clusternapalm")
+	weaponDef = copyweapon("clusternapalm", UD.legehovertank.weapondefs.parabolic_rockets)
 	weaponDef.areaofeffect = 56
 	weaponDef.edgeeffectiveness = 0.25
 	weaponDef.explosiongenerator = "custom:genericshellexplosion-small-bomb"
@@ -309,13 +309,12 @@ if unit("legbar") then
 end
 
 if unit("legbart") then
-	unitDef.weapondefs.clusternapalm = table.copy(UD.armfido.weapondefs.bfido)
+	copyweapon("clusternapalm", UD.armfido.weapondefs.bfido)
 	costs(0.85)
 end
 
 if unit("leginf") then
-	unitDef.weapondefs.rapidnapalm = table.copy(UD.cortrem.weapondefs.tremor_spread_fire)
-	weapon("rapidnapalm")
+	weaponDef = copyweapon("rapidnapalm", UD.cortrem.weapondefs.tremor_spread_fire)
 	weaponDef.burst = 3
 	weaponDef.burstrate = 0.3333
 	weaponDef.reloadtime = 2
@@ -325,12 +324,12 @@ if unit("leginf") then
 end
 
 if unit("legperdition") then
-	unitDef.weapondefs.napalmmissile = table.copy(UD.cortron.weapondefs.cortron_weapon)
+	copyweapon("napalmmissile", UD.cortron.weapondefs.cortron_weapon)
 end
 
 -- Medusa
 if unit("legmed") then
-	unitDef.weapondefs.laser = table.copy(UD.corak.weapondefs.gator_laser)
+	copyweapon("laser", UD.corak.weapondefs.gator_laser)
 	unitDef.weapons[1].badtargetcategory = "VTOL"
 	unitDef.weapons[2].badtargetcategory = "VTOL"
 	unitDef.weapons[2].slaveto = nil
@@ -348,10 +347,9 @@ end
 
 -- Blindfold
 if unit("legcib") and weapon("juno_pulse_mini") then
-	unitDef.weapondefs.emp_pulse = table.copy(weaponDef)
 	unitDef.weapons[1].def = "emp_pulse"
+	weaponDef = copyweapon("emp_pulse", weaponDef)
 	unitDef.weapondefs.juno_pulse_mini = nil
-	weapon("emp_pulse")
 	weaponDef.customparams = nil
 	weaponDef.paralyzer = true
 	weaponDef.paralyzetime = 5
@@ -363,15 +361,15 @@ end
 
 -- Telchine
 if unit("legamph") then
-	unitDef.weapondefs.heat_ray = table.copy(UD.cormaw.weapondefs.dmaw)
-	unitDef.weapondefs.coax_depthcharge = table.copy(UD.cormort.weapondefs.cor_mort)
+	copyweapon("heat_ray", UD.cormaw.weapondefs.dmaw)
+	copyweapon("coax_depthcharge", UD.cormort.weapondefs.cor_mort)
 	unitDef.weapons[2].onlytargetcategory = "SURFACE"
 end
 
 --------------------------------------------------------------------------------
 -- Reactive armor --------------------------------------------------------------
 
-for _, name in ipairs { "legkark", "legamph", "legshot" } do
+for _, name in pairs { "legkark", "legamph", "legshot" } do
 	if unit(name) then
 		custom(unitDef)
 		local armoredMult = 1 / unitDef.damagemodifier
@@ -431,9 +429,9 @@ end
 
 if unit("legnavydestro") then
 	ref = UD.legnavyartyship
-	copy(unitDef, "buildpic", "collisionvolumeoffsets", "collisionvolumescales", "collisionvolumetype", "objectname", "script")
+	copyref(unitDef, "buildpic", "collisionvolumeoffsets", "collisionvolumescales", "collisionvolumetype", "objectname", "script")
+	copyweapon("depthcharge", UD.corroy.weapondefs.depthcharge)
 	unitDef.weapons[2] = table.copy(UD.corroy.weapons[2])
-	unitDef.weapondefs.depthcharge = table.copy(UD.corroy.weapondefs.depthcharge)
 	unitDef.weapondefs.drone_control_matrix = nil
 	costs(1.08)
 end
@@ -449,7 +447,7 @@ end
 
 if unit("legfig") then
 	ref = UD.armfig
-	copy(unitDef, "buildtime", "energycost", "metalcost", "speed", "turnradius")
+	copyref(unitDef, "buildtime", "energycost", "metalcost", "speed", "turnradius")
 	unitDef.weapondefs.semiauto = table.copy(ref.weapondefs.armvtol_missile)
 	unitDef.weapons[1].maxangledif = nil
 end
