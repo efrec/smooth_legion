@@ -330,7 +330,7 @@ if unit("legcib") then
 	weaponDef.paralyzetime = 10
 	weaponDef.range = unitDef.speed * 3
 	weaponDef.reloadtime = 10
-	damages(1 / 15)
+	damages(0.1)
 end
 
 -- Telchine
