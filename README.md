@@ -8,6 +8,8 @@ Copy the contents of `tweakdef_minified_encoding.txt` into the tweakdefs field i
 
 Removes every single faction-exclusive mechanic, idea, and design from Legion.
 
+You can read the detailed change list in the [gist](gist.md).
+
 ### Why
 
 So that finally Gamers can be free. Legion cannot hurt them anymore because it contains zero Legion.
